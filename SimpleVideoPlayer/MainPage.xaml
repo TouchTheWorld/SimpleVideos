@@ -1,0 +1,65 @@
+﻿<Page
+    x:Class="SimpleVideoPlayer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SimpleVideoPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodel="using:SimpleVideoPlayer.ViewModel"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <viewmodel:ViewModel/>
+    </Page.DataContext>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="700"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button x:Name="DEAm" Content="读取" Click="DEAm_Click" Grid.Row="0"></Button>
+        <ProgressRing x:Name="progressRing1" IsActive="True" Grid.Row="0" HorizontalAlignment="Left" Visibility="Collapsed" />
+        <ListView x:Name="listview" ItemsSource="{Binding VideoModel.showapi_res_body.pagebean.contentlist}" Grid.Row="1" Loaded="listview_Loaded" HorizontalAlignment="Left">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel x:Name="stack" Grid.Row="1" Height="600">
+                        <StackPanel Height="50" Orientation="Horizontal">
+                            <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0">
+                                <Image Source="{Binding profile_image}"></Image>
+                            </Border>
+                            <StackPanel>
+                                <TextBlock Text="{Binding name}" FontSize="20" Margin="0,5,0,0"></TextBlock>
+                                <TextBlock Text="{Binding create_time}" FontSize="12" Foreground="#FF626B6B" Margin="0,5,10,0"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Margin="10,10,0,20" Height="auto"  FontSize="16" TextWrapping="Wrap" Text="{Binding text}"></TextBlock>
+                        <MediaElement x:Name="mediaElement" Margin="10,0,0,0" Source="{Binding video_uri}" Width="400" Height="400" AutoPlay="False" AreTransportControlsEnabled="True" HorizontalAlignment="Left" >
+                            <MediaElement.TransportControls>
+                                <MediaTransportControls IsZoomButtonVisible="False" IsZoomEnabled="False"  IsStopButtonVisible="True" IsStopEnabled="True" IsSeekBarVisible="True" IsSeekEnabled="True" IsTextScaleFactorEnabled="False"></MediaTransportControls>
+                            </MediaElement.TransportControls>
+                        </MediaElement>
+                        <Grid  Width="400" Height="auto" Margin="10,0,0,0" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <CommandBar Grid.Column="0" HorizontalAlignment="Left" IsOpen="True" Width="250">
+                                <AppBarButton x:Name="love" Icon="Like" Label="{Binding love}" />
+                                <AppBarSeparator BorderBrush="Black" ></AppBarSeparator>
+                                <AppBarButton x:Name="hate" Icon="Dislike" Label="{Binding hate}" />
+                            </CommandBar>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="1" Background="{ThemeResource ButtonDisabledBackgroundThemeBrush}">
+                                <TextBlock Text="转跳到微信" Margin="0,10,5,0"></TextBlock>
+                                <HyperlinkButton  NavigateUri="{Binding weixin_url}" Width="60">
+                                    <SymbolIcon Symbol="Send" Width="90"/>
+                                </HyperlinkButton>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
